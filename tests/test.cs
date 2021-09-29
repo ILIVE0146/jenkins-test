@@ -13,14 +13,14 @@ class test
             // Note, for this client to work you need to have a TcpServer
             // connected to the same address as specified by the server, port
             // combination.
-            Int32 port = 1022;
+            Int32 port = int.Parse(message[0]);
             TcpClient client = new TcpClient(server, port);
 
             // Translate the passed message into ASCII and store it as a Byte array.
-            string tosend = message[0];
+            string tosend = message[1];
             foreach (string item in message)
             {
-                if (item == message[0])
+                if (item == message[0] || item == message[1])
                 {
                     continue;
                 }
@@ -68,6 +68,10 @@ class test
         int sum = 0;
         foreach (var item in args)
         {
+            if(item == args[0])
+            {
+                continue;
+            }
             sum = sum + int.Parse(item);
         }
         

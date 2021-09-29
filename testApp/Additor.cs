@@ -6,14 +6,14 @@ namespace Calculator
 {
     class Additor
     {
-        static void Main()
+        static void Main(string[] args)
         {
 
 
             TcpListener server = null;
             try
             {
-                Int32 port = 1022;
+                Int32 port = int.Parse(args[0]);
                 IPAddress localAddr = IPAddress.Parse("127.0.0.1");
                 server = new TcpListener(localAddr, port);
                 // Start listening for client requests.
