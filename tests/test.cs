@@ -69,8 +69,10 @@ using System.Net;
 using System.Net.Sockets;
 class test
 {
-    static void Connect(String server, String[] message)
+    static int Connect(String server, String[] message)
     {
+        // String to store the response ASCII representation.
+        string responseData = String.Empty;
         try
         {
             // Create a TcpClient.
@@ -107,9 +109,6 @@ class test
             // Buffer to store the response bytes.
             data = new Byte[256];
 
-            // String to store the response ASCII representation.
-            string responseData = String.Empty;
-
             // Read the first batch of the TcpServer response bytes.
             Int32 bytes = stream.Read(data, 0, data.Length);
             responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
@@ -127,13 +126,25 @@ class test
         {
             Console.WriteLine("SocketException: {0}", e);
         }
-
-        Console.WriteLine("\n Press Enter to continue...");
-        Console.Read();
+        Console.WriteLine("EXITING");
+        return int.Parse(responseData);
     }
 
-    static void Main(string[] args)
+    static int Main(string[] args)
     {
-        Connect("127.0.0.1", args);
+        int sum = 0;
+        foreach (var item in args)
+        {
+            sum = sum + int.Parse(item);
+        }
+        
+        if (sum != Connect("127.0.0.1", args))
+        {
+            return 0;
+        }
+        else
+        {
+            return -1;
+        }
     }
 }

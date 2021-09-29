@@ -74,8 +74,7 @@ namespace Calculator
                 server.Stop();
             }
 
-            Console.WriteLine("\nHit enter to continue...");
-            Console.Read();
+            Console.WriteLine("EXITING");
         }
     }
 }
