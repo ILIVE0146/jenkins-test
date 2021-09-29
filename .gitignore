@@ -1,5 +1,4 @@
 .vscode
 build
-testApp/bin
-testApp/obj
-*.exe
+**/bin
+**/obj
