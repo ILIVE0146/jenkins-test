@@ -12,12 +12,12 @@ namespace Calculator
             switch (args.Length)
             {
                 case 0:
-                Console.WriteLine("ERROR: Invaid Numbers of Arguments given\nExpected: PORT");
-                Environment.Exit(-1);
-                break;
-                case >1:
-                Console.WriteLine("WARNING: More than 1 command line argments given\nonly using the first one");
-                break;
+                    Console.WriteLine("ERROR: Invaid Numbers of Arguments given\nExpected: PORT");
+                    Environment.Exit(-1);
+                    break;
+                case > 1:
+                    Console.WriteLine("WARNING: More than 1 command line argments given\nonly using the first one");
+                    break;
             }
 
             TcpListener server = null;
@@ -50,6 +50,14 @@ namespace Calculator
                     {
                         // Translate data bytes to a ASCII string.
                         data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+
+                        if (data == "exit")
+                        {
+                            client.Close();
+                            exitServer = true;
+                            break;
+                        }
+
                         Console.WriteLine("Received: {0}", data);
 
                         // Process the data sent by the client.
@@ -68,10 +76,13 @@ namespace Calculator
                         Console.WriteLine("Sent(sum): {0}", data);
                     }
 
-                    // Shutdown and end connection
+                    //end connection
                     client.Close();
-                    exitServer = true;
-                    server.Stop();
+                    if (exitServer == true)
+                    {
+                        server.Stop();
+                        break;
+                    }
                 }
             }
             catch (SocketException e)

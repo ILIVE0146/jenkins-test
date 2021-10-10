@@ -50,6 +50,14 @@ namespace Calculator
                     {
                         // Translate data bytes to a ASCII string.
                         data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+
+                        if (data == "exit")
+                        {
+                            client.Close();
+                            exitServer = true;
+                            break;
+                        }
+
                         Console.WriteLine("Received: {0}", data);
 
                         // Process the data sent by the client.
@@ -75,8 +83,12 @@ namespace Calculator
 
                     // Shutdown and end connection
                     client.Close();
-                    exitServer = true;
-                    server.Stop();
+
+                    if (exitServer == true)
+                    {
+                        server.Stop();
+                        break;
+                    }
                 }
             }
             catch (SocketException e)
