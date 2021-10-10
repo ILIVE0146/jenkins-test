@@ -1,7 +1,6 @@
 using System;
-using System.Net;
 using System.Net.Sockets;
-class test
+class Test
 {
     static int Connect(String server, String[] message)
     {
@@ -62,26 +61,122 @@ class test
         }
         return int.Parse(responseData);
     }
-
-    static int Main(string[] args)
+    public enum exitCodes: int
     {
-        int sum = 0;
+        AdditionError = -1,
+        SubtractionError = -2,
+        DivisionError = -3,
+        MultiplicationError = -4
+    }
+
+    static void Main(string[] args)
+    {
+
+        switch (args.Length)
+        {
+            case 0:
+                Console.WriteLine("ERROR: Invaid Numbers of Arguments given\nExpected: PORT OPERATOR NUMBERS");
+                Environment.Exit(-1);
+                break;
+            case 1:
+                Console.WriteLine("ERROR: Invaid Numbers of Arguments given\nExpected: OPERATOR NUMBERS");
+                Environment.Exit(-1);
+                break;
+            case 2:
+                Console.WriteLine("ERROR: Invaid Numbers of Arguments given\nExpected: NUMBERS");
+                Environment.Exit(-1);
+                break;
+            case 3:
+                Console.WriteLine("WARNING: Only One Number is given.");
+                break;
+        }
+
+        Console.WriteLine("Testing Addition service");
+        float sum = 0;
         foreach (var item in args)
         {
-            if(item == args[0])
+            if (item == args[0])
             {
+                sum = float.Parse(item);
                 continue;
             }
-            sum = sum + int.Parse(item);
+            sum = sum + float.Parse(item);
         }
-        
         if (sum == Connect("127.0.0.1", args))
         {
-            return 0;
+            Console.WriteLine("Addition success");
         }
         else
         {
-            return -1;
+            Console.WriteLine("Addition failed");
+            Environment.ExitCode = (int) Test.exitCodes.AdditionError;
+            Environment.Exit(Environment.ExitCode);
+        }
+
+        Console.WriteLine("Testing Subtraction service");
+        sum = 0;
+        foreach (var item in args)
+        {
+            if (item == args[0])
+            {
+                sum = float.Parse(item);
+                continue;
+            }
+            sum = sum - float.Parse(item);
+        }
+        if (sum == Connect("127.0.0.1", args))
+        {
+            Console.WriteLine("Subtraction success");
+        }
+        else
+        {
+            Console.WriteLine("Subtraction failed");
+            Environment.ExitCode = (int) Test.exitCodes.SubtractionError;
+            Environment.Exit(Environment.ExitCode);
+        }
+
+        Console.WriteLine("Testing multiplication service");
+        sum = 0;
+        foreach (var item in args)
+        {
+            if (item == args[0])
+            {
+                sum = float.Parse(item);
+                continue;
+            }
+            sum = sum * float.Parse(item);
+        }
+        if (sum == Connect("127.0.0.1", args))
+        {
+            Console.WriteLine("multiplication success");
+        }
+        else
+        {
+            Console.WriteLine("multiplication failed");
+            Environment.ExitCode = (int) Test.exitCodes.MultiplicationError;
+            Environment.Exit(Environment.ExitCode);
+        }
+
+        Console.WriteLine("Testing division service");
+        sum = 0;
+        foreach (var item in args)
+        {
+            if (item == args[0])
+            {
+                sum = float.Parse(item);
+                continue;
+            }
+            sum = sum / float.Parse(item);
+        }
+        if (sum == Connect("127.0.0.1", args))
+        {
+            Console.WriteLine("division success");
+        }
+        else
+        {
+            Console.WriteLine("division failed");
+            Environment.ExitCode = (int) Test.exitCodes.DivisionError;
+            Environment.Exit(Environment.ExitCode);
         }
     }
 }

@@ -4,11 +4,21 @@ using System.Net.Sockets;
 
 namespace Calculator
 {
-    class Additor
+    class Divisor
     {
         static void Main(string[] args)
         {
 
+            switch (args.Length)
+            {
+                case 0:
+                    Console.WriteLine("ERROR: Invaid Numbers of Arguments given\nExpected: PORT");
+                    Environment.Exit(-1);
+                    break;
+                case > 1:
+                    Console.WriteLine("WARNING: More than 1 command line argments given\nonly using the first one");
+                    break;
+            }
 
             TcpListener server = null;
             try
@@ -43,19 +53,24 @@ namespace Calculator
                         Console.WriteLine("Received: {0}", data);
 
                         // Process the data sent by the client.
-                        int sum = 0;
                         string[] numlist = data.Split(' ');
+                        float div = 0;
                         foreach (string item in numlist)
                         {
-                            sum = sum + int.Parse(item);
+                            if (item == numlist[0])
+                            {
+                                div = float.Parse(item);
+                                continue;
+                            }
+                            div = div / float.Parse(item);
                         }
 
-                        data = sum.ToString();
+                        data = div.ToString();
                         byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
 
                         // Send back a response.
                         stream.Write(msg, 0, msg.Length);
-                        Console.WriteLine("Sent(sum): {0}", data);
+                        Console.WriteLine("Sent(DIVISION): {0}", data);
                     }
 
                     // Shutdown and end connection
